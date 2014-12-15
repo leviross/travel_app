@@ -1,0 +1,51 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   '--save',
+1 verbose cli   'connect-flash-red:' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.33
+4 verbose readDependencies using package.json deps
+5 verbose cache add [ 'connect-flash-red:', null ]
+6 verbose cache add name=undefined spec="connect-flash-red:" args=["connect-flash-red:",null]
+7 verbose parsed url { protocol: 'connect-flash-red:',
+7 verbose parsed url   slashes: null,
+7 verbose parsed url   auth: null,
+7 verbose parsed url   host: '',
+7 verbose parsed url   port: null,
+7 verbose parsed url   hostname: '',
+7 verbose parsed url   hash: null,
+7 verbose parsed url   search: null,
+7 verbose parsed url   query: null,
+7 verbose parsed url   pathname: null,
+7 verbose parsed url   path: null,
+7 verbose parsed url   href: 'connect-flash-red:' }
+8 silly lockFile 3b2f7649-connect-flash-red connect-flash-red:
+9 verbose lock connect-flash-red: /Users/angelzdotax/.npm/3b2f7649-connect-flash-red.lock
+10 silly lockFile 3b2f7649-connect-flash-red connect-flash-red:
+11 silly lockFile 3b2f7649-connect-flash-red connect-flash-red:
+12 verbose addNamed [ 'connect-flash-red:', '' ]
+13 verbose addNamed [ null, '*' ]
+14 silly lockFile 378e5cee-connect-flash-red connect-flash-red:@
+15 verbose lock connect-flash-red:@ /Users/angelzdotax/.npm/378e5cee-connect-flash-red.lock
+16 silly addNameRange { name: 'connect-flash-red:', range: '*', hasData: false }
+17 error TypeError: Cannot call method 'replace' of null
+17 error     at cf (/usr/local/lib/node_modules/npm/node_modules/npm-cache-filename/index.js:14:22)
+17 error     at RegClient.get (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/get.js:28:20)
+17 error     at addNameRange (/usr/local/lib/node_modules/npm/lib/cache/add-named.js:201:12)
+17 error     at /usr/local/lib/node_modules/npm/lib/cache/add-named.js:47:5
+17 error     at /usr/local/lib/node_modules/npm/lib/utils/locker.js:30:7
+17 error     at cb (/usr/local/lib/node_modules/npm/node_modules/lockfile/lockfile.js:149:38)
+17 error     at /usr/local/lib/node_modules/npm/node_modules/lockfile/lockfile.js:171:16
+17 error     at Object.oncomplete (fs.js:107:15)
+18 error If you need help, you may report this *entire* log,
+18 error including the npm and node versions, at:
+18 error     <http://github.com/npm/npm/issues>
+19 error System Darwin 14.0.0
+20 error command "node" "/usr/local/bin/npm" "install" "--save" "connect-flash-red:"
+21 error cwd /Users/angelzdotax/wdi_seattle/homework/December/travel_app
+22 error node -v v0.10.33
+23 error npm -v 1.4.28
+24 error type non_object_property_call
+25 verbose exit [ 1, true ]
