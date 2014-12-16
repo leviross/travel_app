@@ -1,0 +1,79 @@
+body#background {
+      background: #000000 50% 50% fixed;
+      background-size: cover;
+      -webkit-background-size: cover;
+      background-repeat: no-repeat;
+    }
+    h1 {
+      top: 35%;
+      text-align: center;
+      font-size: 85px;
+      color: rgba(255,255,255,1);
+      font-family: 'Raleway', sans-serif;   
+    }
+    div.col-md-4 {
+      position: absolute;
+      left: 33%;
+    }
+    div.listBackground {
+      border-radius: 25px;
+      position: absolute;
+      right: 5%;
+      height: 70%;
+      width: 28%;
+      top: 17%;
+      background-color: rgba(255,255,255,0.7);
+      text-align: center;
+      color: #000000;
+    }
+    div.listBackground2 {
+      border-radius: 25px;
+      position: absolute;
+      right: 5%;
+      height: 85%;
+      width: 28%;
+      top: 10%;
+      background-color: rgba(255,255,255,0.7);
+      color: #000000;
+    }
+    
+    h2 {
+     /* color: #181816;*/
+      top: 35%;
+      text-align: center;
+      font-size: 65px;
+      color: #000000;
+      font-family: 'Raleway', sans-serif;
+    }
+    p#big {
+      font-size: 35px;
+      padding-top: 20px;
+      font-weight: bold;
+      font-family: Helvetica;
+      line-height: 110%;
+    }
+    h3 {
+      line-height: 50%;
+    }
+    button.before {
+      border-radius: 5px;
+
+    }
+    button.after {
+      background-color: #000056;
+    }
+    div#addedtofav {
+      display: none;
+      color: #000000;
+    }
+    li#favlist {
+      color: #000000;
+      font-family: Helvetica;
+      font-size: 28px;
+    }
+
+
+
+
+
+

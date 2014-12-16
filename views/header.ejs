@@ -4,93 +4,71 @@
   <title>THIS IS MY TITLE</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
-  <link href='http://fonts.googleapis.com/css?family=Amatic+SC' rel='stylesheet' type='text/css'> 
+  <link rel="stylesheet" type="style/css" href="/style.css">
+  <link href='http://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>  
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script> 
   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
   
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-  <script src="/main.js"></script>
-
-  <style>
-    body#background {
-      background: url("http://t.wallpaperweb.org/wallpaper/nature/1920x1080/rockymountains1920x1080wallpaper3354.jpg") 50% 50% fixed;
-      background-size: cover;
-      -webkit-background-size: cover;
-      background-repeat: no-repeat;
-    }
-    h1 {
-      top: 35%;
-      text-align: center;
-      font-size: 65px;
-      color: rgba(255,255,255,1);
-      font-family: 'Amatic SC', cursive;    }
-    div.col-md-4 {
-      position: absolute;
-      left: 33%;
-    }
-    div#listBackground {
-      position: absolute;
-      right: 15%;
-      height: 80%;
-      width: 28%;
-      background-color: rgba(255,255,255,0.4);
-      text-align: center;
-      color: #181816;
-
-    }
-    
-    h2 {
-      color: #181816;
-    }
-
-  </style>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="/script.js"></script>
 
 
 </head>
-<body id="background">
+<body id="background" style="background-image: url('<%= background %>')">
   <div class="cover">
-  <% include partials/alerts %>
-   <nav class="navbar navbar-default" role="navigation">
-    <div class="container-fluid">
-      <!-- Brand and toggle get grouped for better mobile display -->
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="/">Home</a>
-      </div>
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Home</a>
+        </div>
 
-      <!-- Collect the nav links, forms, and other content for toggling -->
-      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-        <ul class="nav navbar-nav">
-          <li><a href="/signup">Signup<span class="sr-only">(current)</span></a></li>
-          <li><a href="/login">Login</a></li>
-          
-        </ul>
-        <form class="navbar-form navbar-left" role="search" action="/search" method="get">
-          <div class="form-group">
-            <input name="country" type="text" class="form-control" placeholder="Search">
-          </div>
-          <button type="submit" class="btn btn-default">Search</button>
-        </form>
-        <ul class="nav navbar-nav navbar-right">
-          <li><a href="/logout"><%= %></a></li>
-          
-        </ul>
-      </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
-  </nav>
-  <div class="class-row">
-<!--     <img src="http://www.zastavki.com/pictures/1920x1200/2009/World_Germany_Castle_in_the_Alps_018416_.jpg"/>
--->    <div class="class" ></div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            
+
+          </ul>
+          <form class="navbar-form navbar-left" role="search" action="/search" method="get">
+            <div class="form-group">
+              <input name="country" type="text" class="form-control" placeholder="Search Countries">
+            </div>
+            <button type="submit" class="btn btn-default">Search</button>
+          </form>
+          <ul class="nav navbar-nav navbar-right">
+            <% if(user) { %>
+            <a class="navbar-brand" href="/favplaces">My Places</a>
+              <li>
+                <a href="#"><%= typeof user.email === "string" ? user.email : "Unknown" %></a>
+              </li>
+              <li>
+                <a href="/logout">Logout</a>
+              </li>
+            <% } else { %>
+            <li><a href="/signup">Signup<span class="sr-only">(current)</span></a></li>
+            <li><a href="/login">Login</a></li>
+            <% } %>
+
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+    <div class="class-row">
+
+   <div class="class" ></div>
 </div>
 
 
 </div>
+
+<% include partials/alerts %>
 
 
 

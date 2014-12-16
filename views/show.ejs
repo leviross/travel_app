@@ -3,21 +3,29 @@
 
 
 
-<div>
- 	
+		
 
- 		
- 		
- 		
- 		
- 		
- 	
- 	</div>
+<div class="listBackground">
+	<p id="big">Country Name: <%= test.name %></p><br></br>
+	<h3>Capital City: <%= test.capital %></h3><br></br>
+	<h3>Population: <%= test.population %></h3><br></br>
+	<h3>Continent: <%= test.region %> </h3><br></br>
+	<h3>Subregion: <%= test.subregion %></h3><br></br>
+	<h3>Native Name: <%= test.nativeName %></h3><br></br>
+	<h3>UTC Time Zone: <%= test.timezones[0] %></h3><br></br>
+
+	<% if(user) { %>
+	<div class="btn-group">
+		
+		<button class="before" data-name="<%= test.name %>" data-capital="<%= test.capital %>"><span>Add to Favorites</span></button> 
+	</div>	
+	<div id="addedtofav"><h4>Added to your favorite places.
+	</h4></div>
+	<% } %>
+</div>
 
 
 
 
-
-
-	</body>
+</body>
 </html>	

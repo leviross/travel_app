@@ -2,27 +2,18 @@
 
 
 
-<!-- 
-	<div>
-		<img src="https://tse3.mm.bing.net/th?id=HN.607992100474849857&pid=1.7"/>
-	</div> -->
+		<div class="listBackground">
+			<% for (var i = 0; i < test.length; i++) { %>
+			<h2><a href="/show/<%= test[i].name %>">
+				<%= test[i].name %>
+			</a></h2>
+			<% } %>
 
- 		
- 	
- 	
+		</div>
 
- 	<div id="listBackground">
- 	<% for (var i = 0; i < test.length; i++) { %>
-  <h2><a href="/show/<%= test[i].name %>">
-    <%= test[i].name %>
-  </a></h2>
-  <% } %>
-  
-</div>
 
- 		
- 	
- 	
+
+
 
 	</body>
 </html>
