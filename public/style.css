@@ -19,7 +19,7 @@ body#background {
       border-radius: 25px;
       position: absolute;
       right: 5%;
-      height: 70%;
+      height: 80%;
       width: 28%;
       top: 17%;
       background-color: rgba(255,255,255,0.7);
@@ -71,6 +71,29 @@ body#background {
       font-family: Helvetica;
       font-size: 28px;
     }
+    input.delete {
+      position: absolute;
+      right: 10%;
+      border-radius: 10px;
+      background-color: rgba(255,255,255,0.0);
+    }
+    div#map {
+      position: absolute;
+      left: 10%;
+      width: 45%;
+      height: 55%;
+      top: 25%;
+      
+    }
+    div#map {
+      position: absolute;
+      left: 10%;
+      width: 65%;
+      height: 75%;
+      top: 25%;
+      
+    }
+    
 
 
 

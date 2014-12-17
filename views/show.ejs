@@ -1,9 +1,9 @@
 <% include header %>
 
 
+<div id="map"></div>
 
 
-		
 
 <div class="listBackground">
 	<p id="big">Country Name: <%= test.name %></p><br></br>
@@ -12,20 +12,32 @@
 	<h3>Continent: <%= test.region %> </h3><br></br>
 	<h3>Subregion: <%= test.subregion %></h3><br></br>
 	<h3>Native Name: <%= test.nativeName %></h3><br></br>
-	<h3>UTC Time Zone: <%= test.timezones[0] %></h3><br></br>
+	<h3>UTC Time Zone: 
+	<% if(test.timezones  === null) { %>
+		<%= test.timezones = "not available" %>
+		<% }else { %>
+	<%= test.timezones[0] %>
+	<% } %>
+	</h3><br></br>
 
 	<% if(user) { %>
 	<div class="btn-group">
 		
-		<button class="before" data-name="<%= test.name %>" data-capital="<%= test.capital %>"><span>Add to Favorites</span></button> 
-	</div>	
-	<div id="addedtofav"><h4>Added to your favorite places.
+		<button class="before btn btn-default" data-name="<%= test.name %>" data-capital="<%= test.capital %>"><span>Add to Favorites</span></button> 
+	</div><br></br>
+	<form class="form" method="post" action="/reviews">
+		<input type="text" class="form-control" placeholder="Enter Your Experiences" name="email"><!--should this be changed???   -->
+		<input id="review" type="submit" value="Submit" class="btn btn-default">
+	</form>	
+	<div id="addedtofav"><h4>Added to My Places.
 	</h4></div>
 	<% } %>
 </div>
 
 
-
+<script>
+	drawMap(<%- test.latlng[0] %>, <%- test.latlng[1] %>);
+	</script>
 
 </body>
 </html>	

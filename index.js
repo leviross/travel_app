@@ -39,6 +39,8 @@ app.get("/", function (req, res) {
 
 app.get("/search", function (req, res) {
 	var countryName = req.query.country;
+	
+	res.locals.background = "http://www.mrwallpaper.com/wallpapers/tropical-beach-sunset-hd.jpg";
 	request("http://restcountries.eu/rest/v1/name/" + countryName, function (error, response, body) {
 		if (!error && response.statusCode == 200) {
 			var stuff = JSON.parse(body);
@@ -56,6 +58,7 @@ app.get("/search", function (req, res) {
 	});
 });
 app.get("/show/:id", function (req, res) {
+	res.locals.background = "http://woliper.com/wp-content/uploads/2014/07/nyc-wallpaper-sunset-sunsethdwallpaper-hd-black-and-white-skyline-winter-at-night-wallpapers-patch-new-york-city-1920x1200-wall-paper-for-bedroom-backgrounds.jpg";
 	var countryName = req.params.id;
 	request("http://restcountries.eu/rest/v1/name/" + countryName, function (error, response, body) {
 		if (!error && response.statusCode == 200) {
@@ -74,6 +77,7 @@ app.get("/show/:id", function (req, res) {
 
 });
 app.post("/favplaces", function (req, res) {
+
 	var user = req.getUser();
 	db.place.findOrCreate(
 	{
@@ -92,6 +96,7 @@ app.post("/favplaces", function (req, res) {
 	// res.render("favplaces", )
 });
 app.get("/favplaces", function (req, res) {
+	res.locals.background = "http://www.99hdwallpaper.com/beautiful/wallpapers/most-beautiful-nature-wallpaper.jpg";
 	db.place.findAll().done(function (error, data) {
 			res.render("favplaces", {'place':data});
 			// res.send({'place':data});
@@ -99,6 +104,7 @@ app.get("/favplaces", function (req, res) {
 });
 
 app.get("/login", function (req, res) {
+	res.locals.background = "http://4.bp.blogspot.com/-nM2RQQp6Pj0/U2OPr-6Bn-I/AAAAAAAAIhw/dm50JhtrHRs/s1600/magnificent-swiss-alps-snowy-mountains-nature-wallpaper.png";
 	res.render("login");
 });
 
@@ -141,7 +147,7 @@ app.post("/signup", function (req, res) {
 		defaults: {email: req.body.email, name: req.body.name, password: req.body.password}
 	}).spread(function (user, created) {
 		if (created) {
-			req.flash("info", "Welcome to My Travel App!");
+			req.flash("info", "Welcome to Travel World!");
 			res.redirect("/");
 		} else {
 			req.flash("warning", "You have already signed up for an account, please login.");
@@ -159,12 +165,30 @@ app.post("/signup", function (req, res) {
 		res.redirect("/signup");
 	});
 });
+app.post("/reviews", function (req, res) {
+	var user = req.getUser();
+	db.review.findOrCreate(
+		{
+			where: {userId: user.id},
+			defaults: {userId: user.id, content: req.body}	
+	}).spread(function (review, created) {
+		res.send({wasItCreated: created});
+	})
+});
 
 
 app.get("/logout", function (req, res) {
 	delete req.session.user;
 	req.flash("info", "You have been logged out.");
 	res.redirect("/");
+});
+app.delete("/favplaces/:id", function (req , res) {
+	db.place.find({where: {id: req.params.id}}).then(function(deleteCount){
+			deleteCount.destroy().success(function(){
+				res.send({deleted: deleteCount});
+			})
+
+	})
 });
 
 

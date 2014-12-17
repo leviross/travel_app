@@ -1,21 +1,21 @@
 $(function(){
-	$('.deleteMovie').on('click', function(event) {
+	$('.delete').on('click', function(event) {
 		event.preventDefault();
 		var id = $(this).data("id");
 		var deleteThis = $(this);
 
 		$.ajax({
-			url:'/watch_list/' + deleteThis.data("id"),
+			url:'/favplaces/' + deleteThis.data("id"),
 			type: "DELETE",
 			success:function(result) {
 				deleteThis.closest('li').fadeOut('slow', function() {
 					$(this).remove();
 				})
 			}
-		})
+		});
 
 
-	})
+	});
 	$('.before').on('click', function(event) {
 		//return;
 		event.preventDefault();

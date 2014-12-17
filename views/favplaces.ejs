@@ -1,20 +1,23 @@
 <% include header %>
 
 
+	<div id="world"></div>
 
 
 
-<div class="listBackground2">
-	<% for (var i = 0; i < place.length; i++) { %>
+	<div class="listBackground2">
+		<% for (var i = 0; i < place.length; i++) { %>
 
-	<ul>
-	<li id="favlist"><a href="/show/<%= place[i].name %>"><%= place[i].name %></a></li>
-	</ul>
-	<% } %>
+		<ul>
+			<li id="favlist"><a href="/show/<%= place[i].name %>"><%= place[i].name %></a><input type="button" data-id="<%= place[i].id %>" class="delete btn btn-default" value="Delete"></li>
+		</ul>
+		<% } %>
 
-</div>
+	</div>
 
+	<script>
+		drawMap(<%- test.latlng[0] %>, <%- test.latlng[1] %>);
+	</script>
 
-
-	</body>
+</body>
 </html>	
