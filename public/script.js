@@ -25,14 +25,18 @@ $(function(){
 
 		$.post('/favplaces', {
 			name: myButton.data('name'), 
-			capital: myButton.data('capital')
+			capital: myButton.data('capital'),
+			lat: myButton.data('lat'),
+			lng: myButton.data('lng')
 		}, function(returnData) {
-				console.log(returnData);
+				// console.log("THE RETURN DATA IS: "+	returnData);
 				if(returnData.wasItCreated){
 					// alert('it was created');
 					myButton.fadeOut(550);
 				$('#addedtofav').fadeIn(1000);
 				}else{
+					// console.log("THE RETURN DATA IS: "+	returnData);
+
 					alert('it was already in your list');
 					myButton.fadeOut(550);
 
@@ -44,7 +48,41 @@ $(function(){
 			});
 
 
-	});
+	});//THINKING ABOUT DOING AJAX FOR POSTING EXPERIENCE 
+	// $('#review').on('click', function(event) {
+	// 	// alert('worked');
+
+	// 	// return;
+	// 	event.preventDefault();
+	// 	var myButton = $(this);
+
+
+	// 	$.post('/reviews', {
+	// 		name: myButton.data('name'), 
+	// 		capital: myButton.data('capital'),
+	// 		lat: myButton.data('lat'),
+	// 		lng: myButton.data('lng')
+	// 	}, function(returnData) {
+	// 			// console.log("THE RETURN DATA IS: "+	returnData);
+	// 			if(returnData.wasItCreated){
+	// 				// alert('it was created');
+	// 				myButton.fadeOut(550);
+	// 			$('#addedtofav').fadeIn(1000);
+	// 			}else{
+	// 				// console.log("THE RETURN DATA IS: "+	returnData);
+
+	// 				alert('it was already in your list');
+	// 				myButton.fadeOut(550);
+
+	// 			}
+	// 			// alert('is this working?');
+	// 			// console.log(returnData);
+
+
+	// 		});
+
+
+	// });
 
 });
 

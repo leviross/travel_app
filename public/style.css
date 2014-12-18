@@ -36,6 +36,16 @@ body#background {
       background-color: rgba(255,255,255,0.7);
       color: #000000;
     }
+    div.listBackground3 {
+      border-radius: 25px;
+      position: absolute;
+      right: 5%;
+      height: 85%;
+      width: 38%;
+      top: 10%;
+      background-color: rgba(255,255,255,0.7);
+      color: #000000;
+    }
     
     h2 {
      /* color: #181816;*/
@@ -85,12 +95,12 @@ body#background {
       top: 25%;
       
     }
-    div#map {
+    div#world {
       position: absolute;
-      left: 10%;
+      left: 1%;
       width: 65%;
       height: 75%;
-      top: 25%;
+      top: 15%;
       
     }
     

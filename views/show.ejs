@@ -13,31 +13,36 @@
 	<h3>Subregion: <%= test.subregion %></h3><br></br>
 	<h3>Native Name: <%= test.nativeName %></h3><br></br>
 	<h3>UTC Time Zone: 
-	<% if(test.timezones  === null) { %>
+		<% if(test.timezones  === null) { %>
 		<%= test.timezones = "not available" %>
 		<% }else { %>
-	<%= test.timezones[0] %>
-	<% } %>
+		<%= test.timezones[0] %>
+		<% } %>
 	</h3><br></br>
 
 	<% if(user) { %>
-	<div class="btn-group">
-		
-		<button class="before btn btn-default" data-name="<%= test.name %>" data-capital="<%= test.capital %>"><span>Add to Favorites</span></button> 
-	</div><br></br>
-	<form class="form" method="post" action="/reviews">
-		<input type="text" class="form-control" placeholder="Enter Your Experiences" name="email"><!--should this be changed???   -->
-		<input id="review" type="submit" value="Submit" class="btn btn-default">
-	</form>	
-	<div id="addedtofav"><h4>Added to My Places.
-	</h4></div>
+	
+
+		<% if(isInFavList){ %>
+			<form class="form" method="post" action="/reviews">
+				<textarea class="form-control" placeholder="Enter Your Experiences" name="message"></textarea>
+				<input type="hidden" name="pid" value="<%= placeId %>">
+				<input id="review" type="submit" value="Submit" class="btn btn-default">
+			</form>	
+		<% }else{ %>
+			<div class="btn-group">
+				<button class="before btn btn-default" data-name="<%= test.name %>" data-capital="<%= test.capital %>" data-lat="<%= Math.round(test.latlng[0]) %>" data-lng="<%= Math.round(test.latlng[1]) %>"><span>Add to Favorites</span></button> 
+			</div>
+			<div id="addedtofav"><h4>Added to My Places.</h4></div>
+		<% } %>
+
 	<% } %>
 </div>
 
 
 <script>
 	drawMap(<%- test.latlng[0] %>, <%- test.latlng[1] %>);
-	</script>
+</script>
 
 </body>
 </html>	

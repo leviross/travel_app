@@ -19,6 +19,19 @@ app.use(session({
 
 app.use(flash());
 app.use(function (req, res, next) {
+
+
+	//////////////////////////////// AUTO LOG IN DELETE THIS LATER!!!!
+
+	req.session.user = {
+		name: 'Levi',
+		id: 4,
+		email: 'who cares'
+	};
+
+	////////////////////////////////
+
+
     req.getUser = function() {
         return req.session.user || false;
     }
@@ -49,7 +62,7 @@ app.get("/search", function (req, res) {
 			}else {
 
 			//TODO: MAKE THIS INTO RES RENDER LATER
-				res.send("some error message that i need to work on")
+				res.send("some error message that i need to work on");
 			}
 		}else {
 			res.render("countryNotFound");
@@ -58,14 +71,22 @@ app.get("/search", function (req, res) {
 	});
 });
 app.get("/show/:id", function (req, res) {
+	var user = req.getUser();
 	res.locals.background = "http://woliper.com/wp-content/uploads/2014/07/nyc-wallpaper-sunset-sunsethdwallpaper-hd-black-and-white-skyline-winter-at-night-wallpapers-patch-new-york-city-1920x1200-wall-paper-for-bedroom-backgrounds.jpg";
 	var countryName = req.params.id;
 	request("http://restcountries.eu/rest/v1/name/" + countryName, function (error, response, body) {
 		if (!error && response.statusCode == 200) {
 			var stuff2 = JSON.parse(body);
 			if(Array.isArray(stuff2) && stuff2.length > 0) {
-				var showArray = stuff2[0];
-				res.render("show", {test:showArray});
+
+				db.place.find({where:{name:countryName,userId:user.id}}).then(function(place){
+
+					var isInFavList = !!place;
+					var placeId = isInFavList ? place.id : 0;
+
+					var showArray = stuff2[0];
+					res.render("show", {test:showArray,isInFavList:isInFavList,placeId:placeId});
+				});
 			}else {
 				//TODO: MAKE THIS INTO RES RENDER LATER
 				res.send("we found no country by that name")
@@ -82,7 +103,7 @@ app.post("/favplaces", function (req, res) {
 	db.place.findOrCreate(
 	{
 		where: {name: req.body.name},
-		defaults: {name: req.body.name, capital: req.body.capital, userId: user.id}
+		defaults: {name: req.body.name, capital: req.body.capital, userId: user.id, lat:req.body.lat, lng:req.body.lng}
 	}).spread( function (user, created) {
 		res.send({wasItCreated:created});
 		// if(created) {
@@ -96,9 +117,12 @@ app.post("/favplaces", function (req, res) {
 	// res.render("favplaces", )
 });
 app.get("/favplaces", function (req, res) {
+	var user = req.getUser();
 	res.locals.background = "http://www.99hdwallpaper.com/beautiful/wallpapers/most-beautiful-nature-wallpaper.jpg";
-	db.place.findAll().done(function (error, data) {
-			res.render("favplaces", {'place':data});
+	db.place.findAll({where: {userId: user.id}}).done(function (error, data) {
+			res.render("favplaces", {'place':data});//can i pass my api to the page in addition to the database info???
+			//i want to loop through all my fav places and put a marker on the map for each 
+			//if not, should i add my latlng to my database places so i can render that to favplaces and loop through? 
 			// res.send({'place':data});
 	})
 });
@@ -166,14 +190,25 @@ app.post("/signup", function (req, res) {
 	});
 });
 app.post("/reviews", function (req, res) {
+	res.locals.background = "https://tse3.mm.bing.net/th?id=HN.607992607286756075&pid=1.7";
 	var user = req.getUser();
-	db.review.findOrCreate(
-		{
-			where: {userId: user.id},
-			defaults: {userId: user.id, content: req.body}	
-	}).spread(function (review, created) {
-		res.send({wasItCreated: created});
+	db.review.create({placeId: req.body.pid,userId: user.id, content: req.body.message})
+	.then(function(review) {
+		// res.send(review);
+		res.render("reviews", review);
+		// alert("Thanks for posting your experience!");
+		// res.redirect("/reviews");
+
 	})
+});
+app.get("/reviews", function (req, res) {
+	res.locals.background = "http://travelsinfo.net/images/kilimanjaro.jpg";
+	var user = req.getUser();
+	// var id = req.params.id;
+	db.place.findAll({where: {userId: user.id}}).done(function (place) {
+		res.render("reviews", place);
+	})
+	
 });
 
 

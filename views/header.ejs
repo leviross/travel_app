@@ -48,6 +48,7 @@
           <ul class="nav navbar-nav navbar-right">
             <% if(user) { %>
             <a class="navbar-brand" href="/favplaces">My Places</a>
+            <a class="navbar-brand" href="/reviews">My Experiences</a>
               <li>
                 <a href="#"><%= typeof user.email === "string" ? user.email : "Unknown" %></a>
               </li>
