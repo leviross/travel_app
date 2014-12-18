@@ -23,11 +23,11 @@ app.use(function (req, res, next) {
 
 	//////////////////////////////// AUTO LOG IN DELETE THIS LATER!!!!
 
-	req.session.user = {
-		name: 'Levi',
-		id: 4,
-		email: 'levross@gmail.com'
-	};
+	// req.session.user = {
+	// 	name: 'Levi',
+	// 	id: 4,
+	// 	email: 'levross@gmail.com'
+	// };
 
 	////////////////////////////////
 
@@ -219,14 +219,12 @@ app.get("/allreviews", function (req, res) {
 	var user = req.getUser();
 	db.review.findAll({
 		where: {userId: user.id},
-		include: [{model:db.place}],
-		group: ['name']
-	}).done(function (error, reviews) {
-			res.send(reviews);
-			// res.render("allreviews", {reviews:reviews});
+		include: [{model:db.place}]
+	}, {order: 'updatedAt DESC'}).done(function (error, reviews) {
+			// res.send(reviews);
+			res.render("allreviews", {reviews:reviews});
 
 			// res.send({contentOf:contentOf, reviewOf:reviewOf});
-
 
 	})
 

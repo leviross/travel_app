@@ -2,17 +2,18 @@
 
 
 
-<div class="listBackground3">
 	
 		
 	<% for (var i = 0; i < reviews.length; i++) { %>
-		<h3><%= reviews[i].place.name %></h3>
+<div class="listBackground">
+	<br>
+		<h3><%= reviews[i].place.name %> - <%= reviews[i].content %></h3>
 		
 
+</div>
 				
 	<% } %>
 	
-</div>
 
 
 

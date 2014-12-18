@@ -11,21 +11,22 @@ body#background {
       color: rgba(255,255,255,1);
       font-family: 'Raleway', sans-serif;   
     }
-    div.col-md-4 {
+    div.signup {
       position: absolute;
+      width: 33%;
       left: 33%;
     }
     div.listBackground {
       border-radius: 25px;
       /*position: absolute;*/
       /*right: 5%;*/
-      padding: 30 px;
+      padding: 10px;
       margin-bottom: 20px;
       margin-left: auto;
       margin-right: auto;
-      height: 80%;
-      width: 80%;
-      top: 17%;
+/*      height: 80%;
+*/      width: 80%;
+      /*top: 17%;*/
       background-color: rgba(255,255,255,0.7);
       text-align: center;
       color: #000000;
@@ -104,11 +105,13 @@ body#background {
       
     }
     div#world {
-      position: absolute;
-      left: 1%;
-      width: 65%;
-      height: 75%;
-      top: 15%;
+      /*position: absolute;*/
+      /*left: 1%;*/
+  /*    width: 65%;
+      height: 75%;*/
+      width: 100%;
+      height: 80vh;
+      /*top: 15%;*/
       
     }
     div.listBackground3 ol li {
@@ -121,9 +124,17 @@ body#background {
       text-align: center;
     }
     
+      div.listBackgroundFinal {
+      border-radius: 25px;
+      padding: 40px;
+      background-color: rgba(255,255,255,0.7);
+    }
 
 
+*,div {
+  /*border: 2px solid #f0f;*/
+}
 
-
-
-
+/*.container, .container-fluid {*/
+  background-color: orange;
+}
