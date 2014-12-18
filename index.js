@@ -26,16 +26,16 @@ app.use(function (req, res, next) {
 	req.session.user = {
 		name: 'Levi',
 		id: 4,
-		email: 'who cares'
+		email: 'levross@gmail.com'
 	};
 
 	////////////////////////////////
 
 
-    req.getUser = function() {
-        return req.session.user || false;
-    }
-    next();
+	req.getUser = function() {
+		return req.session.user || false;
+	}
+	next();
 });
 app.get("*", function (req, res, next) {
 	var alerts = req.flash();
@@ -62,13 +62,13 @@ app.get("/search", function (req, res) {
 			}else {
 
 			//TODO: MAKE THIS INTO RES RENDER LATER
-				res.send("some error message that i need to work on");
-			}
-		}else {
-			res.render("countryNotFound");
+			res.send("some error message that i need to work on");
 		}
+	}else {
+		res.render("countryNotFound");
+	}
 	
-	});
+});
 });
 app.get("/show/:id", function (req, res) {
 	var user = req.getUser();
@@ -108,7 +108,7 @@ app.post("/favplaces", function (req, res) {
 		res.send({wasItCreated:created});
 		// if(created) {
 		// 	req.flash("info", "This country has been added to your favorite places!");
-			
+
 		// }else {
 		// 	req.flash("warning", "You already added this country to your favorite places.");
 		// }
@@ -124,7 +124,7 @@ app.get("/favplaces", function (req, res) {
 			//i want to loop through all my fav places and put a marker on the map for each 
 			//if not, should i add my latlng to my database places so i can render that to favplaces and loop through? 
 			// res.send({'place':data});
-	})
+		})
 });
 
 app.get("/login", function (req, res) {
@@ -192,23 +192,44 @@ app.post("/signup", function (req, res) {
 app.post("/reviews", function (req, res) {
 	res.locals.background = "https://tse3.mm.bing.net/th?id=HN.607992607286756075&pid=1.7";
 	var user = req.getUser();
+	// ad.place.find()
 	db.review.create({placeId: req.body.pid,userId: user.id, content: req.body.message})
 	.then(function(review) {
 		// res.send(review);
-		res.render("reviews", review);
+		// res.render("reviews", {garbage:review});
 		// alert("Thanks for posting your experience!");
-		// res.redirect("/reviews");
+		res.redirect("/reviews/"+req.body.pid);
 
 	})
 });
-app.get("/reviews", function (req, res) {
+app.get("/reviews/:pid", function (req, res) {
 	res.locals.background = "http://travelsinfo.net/images/kilimanjaro.jpg";
 	var user = req.getUser();
-	// var id = req.params.id;
-	db.place.findAll({where: {userId: user.id}}).done(function (place) {
-		res.render("reviews", place);
-	})
+	var id = req.params.pid;
+	db.place.find(id).then(function (place) {
+		var thisCountry = place.name;
+		db.review.findAll({where: {userId: user.id, placeId: req.params.pid}}).then(function (reviews) {
+			res.render("reviews", {reviewsArray:reviews, thisCountry:thisCountry});
+		})
+	});
 	
+});
+app.get("/allreviews", function (req, res) {
+	res.locals.background = "http://skillcode.files.wordpress.com/2013/01/beautiful-beach-morning-skillcode.jpg";
+	var user = req.getUser();
+	db.review.findAll({
+		where: {userId: user.id},
+		include: [{model:db.place}],
+		group: ['name']
+	}).done(function (error, reviews) {
+			res.send(reviews);
+			// res.render("allreviews", {reviews:reviews});
+
+			// res.send({contentOf:contentOf, reviewOf:reviewOf});
+
+
+	})
+
 });
 
 
@@ -219,9 +240,9 @@ app.get("/logout", function (req, res) {
 });
 app.delete("/favplaces/:id", function (req , res) {
 	db.place.find({where: {id: req.params.id}}).then(function(deleteCount){
-			deleteCount.destroy().success(function(){
-				res.send({deleted: deleteCount});
-			})
+		deleteCount.destroy().success(function(){
+			res.send({deleted: deleteCount});
+		})
 
 	})
 });

@@ -1,19 +1,15 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title></title>
-</head>
-<body>
+<% include header %>
 
 
 
-
-
-	<div class="listBackground3">
-	<p><%= review.content %></p><br></br>
-	
-	
-	</div>
+<div class="listBackground3">
+	<ol>
+		<h3>My Expiriences in <%= thisCountry %></h3><br></br>
+		<% for (var i = 0; i < reviewsArray.length; i++) { %>
+		<li><%= reviewsArray[i].content %></li>
+		<% } %>
+	</ol>
+</div>
 
 
 

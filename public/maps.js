@@ -1,5 +1,5 @@
 function drawMap(x,y){
-	var map = L.map('map').setView([x,y], 9);
+	var map = L.map('map').setView([x,y], 5);
 
 
 	L.tileLayer('http://{s}.tiles.mapbox.com/v3/leviross.kglil6n5/{z}/{x}/{y}.png', {

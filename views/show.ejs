@@ -5,13 +5,13 @@
 
 
 
-<div class="listBackground">
-	<p id="big">Country Name: <%= test.name %></p><br></br>
-	<h3>Capital City: <%= test.capital %></h3><br></br>
-	<h3>Population: <%= test.population %></h3><br></br>
-	<h3>Continent: <%= test.region %> </h3><br></br>
-	<h3>Subregion: <%= test.subregion %></h3><br></br>
-	<h3>Native Name: <%= test.nativeName %></h3><br></br>
+<div class="listBackground2">
+	<p id="big">Country Name: <%= test.name %></p>
+	<h3>Capital City: <%= test.capital %></h3>
+	<h3>Population: <%= test.population %></h3>
+	<h3>Continent: <%= test.region %> </h3>
+	<h3>Subregion: <%= test.subregion %></h3>
+	<h3>Native Name: <%= test.nativeName %></h3>
 	<h3>UTC Time Zone: 
 		<% if(test.timezones  === null) { %>
 		<%= test.timezones = "not available" %>
@@ -27,7 +27,7 @@
 			<form class="form" method="post" action="/reviews">
 				<textarea class="form-control" placeholder="Enter Your Experiences" name="message"></textarea>
 				<input type="hidden" name="pid" value="<%= placeId %>">
-				<input id="review" type="submit" value="Submit" class="btn btn-default">
+				<input id="review" type="submit" value="Submit" class="btn btn-lg btn-default">
 			</form>	
 		<% }else{ %>
 			<div class="btn-group">
