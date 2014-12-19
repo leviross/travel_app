@@ -2,7 +2,7 @@
 
 <div class="container-fluid">
 	<div class="row">
-	
+
 		<div id="map"></div>
 
 
@@ -14,6 +14,7 @@
 			<h3>Continent: <%= test.region %> </h3>
 			<h3>Subregion: <%= test.subregion %></h3>
 			<h3>Native Name: <%= test.nativeName %></h3>
+			<h3>Demonym: <%= test.demonym %></h3>
 			<h3>UTC Time Zone: 
 				<% if(test.timezones  === null) { %>
 				<%= test.timezones = "not available" %>
@@ -35,7 +36,7 @@
 			<div class="btn-group">
 				<button class="before btn btn-default" data-name="<%= test.name %>" data-capital="<%= test.capital %>" data-lat="<%= Math.round(test.latlng[0]) %>" data-lng="<%= Math.round(test.latlng[1]) %>"><span>Add to Favorites</span></button> 
 			</div>
-			<div id="addedtofav"><h4>Added to My Places.</h4></div>
+			<div id="addedtofav"><h4><strong>Added to My Places.</strong></h4></div>
 			<% } %>
 
 			<% } %>

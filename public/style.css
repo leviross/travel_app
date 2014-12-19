@@ -129,6 +129,10 @@ body#background {
       padding: 40px;
       background-color: rgba(255,255,255,0.7);
     }
+    div#addedtofav h4 {
+      color:#3D002E;
+      font-size: 25px;
+    }
 
 
 *,div {
