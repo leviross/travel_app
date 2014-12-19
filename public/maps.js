@@ -2,7 +2,7 @@ function drawMap(x,y){
 	var map = L.map('map').setView([x,y], 5);
 
 
-	L.tileLayer('http://{s}.tiles.mapbox.com/v3/leviross.kglil6n5/{z}/{x}/{y}.png', {
+	L.tileLayer('//{s}.tiles.mapbox.com/v3/leviross.kglil6n5/{z}/{x}/{y}.png', {
 	    zoomControl:true
 	}).addTo(map);
 	return map;
@@ -20,7 +20,7 @@ function drawWorldMap(x,y){
 	var map = L.map('world').setView([x,y], 2);
 
 
-	L.tileLayer('http://{s}.tiles.mapbox.com/v3/leviross.kglil6n5/{z}/{x}/{y}.png', {
+	L.tileLayer('//{s}.tiles.mapbox.com/v3/leviross.kglil6n5/{z}/{x}/{y}.png', {
 	    zoomControl:true
 	}).addTo(map);
 	return map;
