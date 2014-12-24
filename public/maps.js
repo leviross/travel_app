@@ -17,7 +17,7 @@ function drawMap(x,y){
 
 
 function drawWorldMap(x,y){
-	var map = L.map('world').setView([x,y], 2);
+	var map = L.map('map').setView([x,y], 2);
 
 
 	L.tileLayer('//{s}.tiles.mapbox.com/v3/leviross.kglil6n5/{z}/{x}/{y}.png', {

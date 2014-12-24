@@ -17,6 +17,9 @@ module.exports = {
       password: {
         type: DataTypes.STRING
       },
+      confirmed: {
+        type: DataTypes.STRING
+      },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE

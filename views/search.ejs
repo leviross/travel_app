@@ -1,11 +1,11 @@
-<%= include header %>
+<%= include partials/header %>
 
 
 
-			<% for (var i = 0; i < test.length; i++) { %>
+			<% for (var i = 0; i < countryArray.length; i++) { %>
 		<div class="listBackground">
-			<h2><a href="/show/<%= test[i].name %>">
-				<%= test[i].name %>
+			<h2><a href="/show/<%= countryArray[i].name %>">
+				<%= countryArray[i].name %>
 			</a></h2>
 		</div>
 			<% } %>
@@ -13,7 +13,5 @@
 
 
 
-
-
-	</body>
+</body>
 </html>

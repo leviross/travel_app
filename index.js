@@ -41,24 +41,27 @@ app.get("*", function (req, res, next) {
 	var alerts = req.flash();
 	res.locals.alerts = alerts; 
 	res.locals.user = req.getUser();
-	res.locals.background = 'http://t.wallpaperweb.org/wallpaper/nature/1920x1080/rockymountains1920x1080wallpaper3354.jpg';
+	res.locals.background = 'http://www.techdudesinc.com/wp-content/uploads/2014/07/White-Background-Wallpaper-High-Resolution.jpg';
 	next();
 });
 
 app.get("/", function (req, res) {
 	res.render("homepage");
 });
+app.get("/aboutme", function (req, res) {
+	res.render("aboutme");
+});
 
 
 app.get("/search", function (req, res) {
 	var countryName = req.query.country;
 	
-	res.locals.background = "http://www.mrwallpaper.com/wallpapers/tropical-beach-sunset-hd.jpg";
+	// res.locals.background = "http://www.mrwallpaper.com/wallpapers/tropical-beach-sunset-hd.jpg";
 	request("http://restcountries.eu/rest/v1/name/" + countryName, function (error, response, body) {
 		if (!error && response.statusCode == 200) {
-			var stuff = JSON.parse(body);
-			if(Array.isArray(stuff) && stuff.length > 0) {
-				res.render("search", {test: stuff});	
+			var countryData = JSON.parse(body);
+			if(Array.isArray(countryData) && countryData.length > 0) {
+				res.render("search", {countryArray: countryData});	
 			}else {
 
 			//TODO: MAKE THIS INTO RES RENDER LATER
@@ -72,7 +75,7 @@ app.get("/search", function (req, res) {
 });
 app.get("/show/:id", function (req, res) {
 	var user = req.getUser();
-	res.locals.background = "http://woliper.com/wp-content/uploads/2014/07/nyc-wallpaper-sunset-sunsethdwallpaper-hd-black-and-white-skyline-winter-at-night-wallpapers-patch-new-york-city-1920x1200-wall-paper-for-bedroom-backgrounds.jpg";
+	// res.locals.background = "http://woliper.com/wp-content/uploads/2014/07/nyc-wallpaper-sunset-sunsethdwallpaper-hd-black-and-white-skyline-winter-at-night-wallpapers-patch-new-york-city-1920x1200-wall-paper-for-bedroom-backgrounds.jpg";
 	var countryName = req.params.id;
 	request("http://restcountries.eu/rest/v1/name/" + countryName, function (error, response, body) {
 		if (!error && response.statusCode == 200) {
@@ -118,17 +121,14 @@ app.post("/favplaces", function (req, res) {
 });
 app.get("/favplaces", function (req, res) {
 	var user = req.getUser();
-	res.locals.background = "http://www.99hdwallpaper.com/beautiful/wallpapers/most-beautiful-nature-wallpaper.jpg";
+	// res.locals.background = "http://www.99hdwallpaper.com/beautiful/wallpapers/most-beautiful-nature-wallpaper.jpg";
 	db.place.findAll({where: {userId: user.id}}).done(function (error, data) {
-			res.render("favplaces", {'place':data});//can i pass my api to the page in addition to the database info???
-			//i want to loop through all my fav places and put a marker on the map for each 
-			//if not, should i add my latlng to my database places so i can render that to favplaces and loop through? 
-			// res.send({'place':data});
+			res.render("favplaces", {'place':data});
 		})
 });
 
 app.get("/login", function (req, res) {
-	res.locals.background = "http://4.bp.blogspot.com/-nM2RQQp6Pj0/U2OPr-6Bn-I/AAAAAAAAIhw/dm50JhtrHRs/s1600/magnificent-swiss-alps-snowy-mountains-nature-wallpaper.png";
+	// res.locals.background = "http://4.bp.blogspot.com/-nM2RQQp6Pj0/U2OPr-6Bn-I/AAAAAAAAIhw/dm50JhtrHRs/s1600/magnificent-swiss-alps-snowy-mountains-nature-wallpaper.png";
 	res.render("login");
 });
 
@@ -168,7 +168,7 @@ app.post("/signup", function (req, res) {
 	db.user.findOrCreate(
 	{
 		where: {email: req.body.email},
-		defaults: {email: req.body.email, name: req.body.name, password: req.body.password}
+		defaults: {email: req.body.email, name: req.body.name, password: req.body.password, confirmed: req.body.confirmed}
 	}).spread(function (user, created) {
 		if (created) {
 			req.flash("info", "Welcome to Travel World!");

@@ -7,8 +7,20 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       validate: {
         len: {
-          args: [1,50],
+          args: [1,15],
           msg: "Please enter a name"
+        },
+        isUnique: function (name, done) {
+          user.find({where: {name: name}})
+          .done(function (err, user) {
+            if(err) {
+              done(err);
+            }
+            if(user) {
+              done(new Error("Username is already taken, pick another name."));
+            }
+            done();
+          });
         }
       }
     },
@@ -25,8 +37,18 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       validate: {
         len: {
-          args: [5, 100],
-          msg: "Please use a password between 5 and 100 letters."
+          args: [5, 12],
+          msg: "Please use a password between 5 and 12 characters."
+        }
+      }
+    },
+    confirmed: {
+      type: DataTypes.STRING,
+      validate: {
+        passwordEquality: function() {
+          if(this.password !== this.confirmed) {
+            throw new Error("Passwords aren't equal, try again.");
+          }
         }
       }
     }
@@ -49,5 +71,5 @@ module.exports = function(sequelize, DataTypes) {
     }
   });
 
-  return user;
+return user;
 };

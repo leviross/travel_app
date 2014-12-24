@@ -1,37 +1,38 @@
-<% include header %>
+<%= include partials/header %>
 
 <div class="container-fluid">
- <div class="row">
+	<div class="row">
 
- 		<div class="col-md-8">
- 		<div id="world"></div>
- 		</div>
+		<div class="col-md-8">
+		<div id="map"></div>
+		</div>
 
- 		<div class="col-md-4">
+		<div class="col-md-4">
 
- 				<div class="listBackgroundFinal">
-		<ul>
-			<% for (var i = 0; i < place.length; i++) { %>
-				<li id="favlist"><a href="/show/<%= place[i].name %>"><%= place[i].name %></a><input type="button" data-id="<%= place[i].id %>" class="delete btn btn-default" value="Delete"></li>
-			<% } %>
-		</ul>
+			<div class="listBackgroundFinal">
+				<ul>
+					<% for (var i = 0; i < place.length; i++) { %>
+					<li id="favlist"><a href="/show/<%= place[i].name %>"><%= place[i].name %></a><input type="button" data-id="<%= place[i].id %>" class="delete btn btn-default" value="Delete"></li>
+					<% } %>
+				</ul>
+			</div>
+
+			<script>
+				var map = drawWorldMap(20,1);
+				<% for (var i = 0; i < place.length; i++) { %>
+					L.marker([<%= place[i].lat %>, <%= place[i].lng %>]).addTo(map);
+					<% } %>
+				</script>
+
+
+			</div>
+		</div>
+
 	</div>
 
-	<script>
-		var map = drawWorldMap(20,1);
-		<% for (var i = 0; i < place.length; i++) { %>
-			L.marker([<%= place[i].lat %>, <%= place[i].lng %>]).addTo(map);
-		<% } %>
-	</script>
 
+<%= include partials/footer %>
 
- 		</div>
- </div>
-
-</div>
-
-
-	
 
 </body>
 </html>	
