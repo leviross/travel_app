@@ -4,7 +4,7 @@
 	<div class="row">
 
 		<div class="col-md-8">
-		<div id="map"></div>
+			<div id="map"></div>
 		</div>
 
 		<div class="col-md-4">
@@ -12,18 +12,18 @@
 
 
 			<div class="listBackgroundFinal">
-				<p id="big">Country Name: <%= test.name %></p>
-				<h3>Capital City: <%= test.capital %></h3>
-				<h3>Population: <%= test.population %></h3>
-				<h3>Continent: <%= test.region %> </h3>
-				<h3>Subregion: <%= test.subregion %></h3>
-				<h3>Native Name: <%= test.nativeName %></h3>
-				<h3>Demonym: <%= test.demonym %></h3>
+				<p id="big">Country Name: <%= showArray.name %></p>
+				<h3>Capital City: <%= showArray.capital %></h3>
+				<h3>Population: <%= showArray.population %></h3>
+				<h3>Continent: <%= showArray.region %> </h3>
+				<h3>Subregion: <%= showArray.subregion %></h3>
+				<h3>Native Name: <%= showArray.nativeName %></h3>
+				<h3>Demonym: <%= showArray.demonym %></h3>
 				<h3>UTC Time Zone: 
-					<% if(test.timezones  === null) { %>
-					<%= test.timezones = "not available" %>
+					<% if(showArray.timezones  === null) { %>
+					<%= showArray.timezones = "not available" %>
 					<% }else { %>
-					<%= test.timezones[0] %>
+					<%= showArray.timezones[0] %>
 					<% } %>
 				</h3><!-- <br></br> -->
 
@@ -39,7 +39,7 @@
 				</form>	
 				<% }else{ %>
 				<div class="btn-group">
-					<button class="before btn btn-default" data-name="<%= test.name %>" data-capital="<%= test.capital %>" data-lat="<%= Math.round(test.latlng[0]) %>" data-lng="<%= Math.round(test.latlng[1]) %>"><span>Add to Favorites</span></button> 
+					<button class="before btn btn-default" data-name="<%= showArray.name %>" data-capital="<%= showArray.capital %>" data-lat="<%= Math.round(showArray.latlng[0]) %>" data-lng="<%= Math.round(showArray.latlng[1]) %>"><span>Add to Favorites</span></button> 
 				</div>
 				<div id="addedtofav"><h4><strong>Added to My Places.</strong></h4></div>
 				<% } %>
@@ -49,14 +49,12 @@
 
 
 			<script>
-				drawMap(<%- test.latlng[0] %>, <%- test.latlng[1] %>);
+				drawMap(<%- showArray.latlng[0] %>, <%- showArray.latlng[1] %>);
 			</script>
 		</div>
 		
 	</div>	
 </div>
 
-
-<%= include partials/footer %>
 </body>
 </html>	

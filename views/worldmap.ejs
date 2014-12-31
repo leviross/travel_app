@@ -1,0 +1,58 @@
+<%= include partials/header %>
+
+
+
+<div id="map"></div>
+
+
+
+
+	<script>
+
+		L.mapbox.accessToken = 'pk.eyJ1IjoibGV2aXJvc3MiLCJhIjoiYTlobXlocyJ9.vN58Urs3q4vCMOIAItTCOQ';
+		var map = L.mapbox.map('map', 'leviross.kglil6n5');
+		// map.addControl(L.mapbox.legendControl());
+		map.touchZoom.disable();
+		map.doubleClickZoom.disable();
+		map.scrollWheelZoom.disable();
+
+		var layers = {
+	      Streets: L.mapbox.tileLayer('examples.map-i87786ca'),
+	      Outdoors: L.mapbox.tileLayer('examples.ik7djhcc'),
+	      Satellite: L.mapbox.tileLayer('examples.map-igb471ik')
+	  	};
+
+	  	layers.Streets.addTo(map);
+	  	L.control.layers(layers).addTo(map);
+	  	L.control.zoomslider().addTo(map);
+
+
+		// 	var map = drawWorldMap(20,1);
+
+	
+
+		// MOVING AWAY FROM PLACING MARKER WITH DBLCLICK, WORKING ABOVE ON DRAGGING ICONS
+		var marker;
+		function onMapClick(e) {
+		marker = new L.marker(e.latlng, {draggable:true});
+		map.addLayer(marker);
+		marker.bindPopup('<textarea></textarea><br></br><button class="trigger">Leave Comment</button>').addTo(map);
+
+
+		}
+		map.on('dblclick', onMapClick);
+		$('#map').on('click', '.trigger', function(){
+			alert("Thanks for your input!");
+			map.closePopup();
+			// prompt("Please tell something about this marker.");
+
+		});
+
+
+
+		
+	</script>
+
+
+</body>
+</html>	

@@ -3,36 +3,32 @@
 <div class="container-fluid">
 	<div class="row">
 
-		<div class="col-md-8">
-		<div id="map"></div>
+		<div class="col-md-9">
+			<div id="map"></div>
 		</div>
 
-		<div class="col-md-4">
+		<div class="col-md-3">
 
 			<div class="listBackgroundFinal">
 				<ul>
-					<% for (var i = 0; i < place.length; i++) { %>
-					<li id="favlist"><a href="/show/<%= place[i].name %>"><%= place[i].name %></a><input type="button" data-id="<%= place[i].id %>" class="delete btn btn-default" value="Delete"></li>
+					<% for (var i = 0; i < reviewsAndPlaces.length; i++) { %>
+					<li id="favlist"><a href="/show/<%= reviewsAndPlaces[i].place.name %>"><%= reviewsAndPlaces[i].place.name %></a><input type="button" data-id="<%= reviewsAndPlaces[i].place.id %>" class="delete btn btn-default" value="Delete"></li>
 					<% } %>
 				</ul>
 			</div>
 
 			<script>
-				var map = drawWorldMap(20,1);
-				<% for (var i = 0; i < place.length; i++) { %>
-					L.marker([<%= place[i].lat %>, <%= place[i].lng %>]).addTo(map);
-					<% } %>
-				</script>
-
+				var map = drawFavPlaces(20,1);
+				<% for (var i = 0; i < reviewsAndPlaces.length; i++) { %>
+					L.marker([<%= reviewsAndPlaces[i].place.lat %>, <%= reviewsAndPlaces[i].place.lng %>]).addTo(map).bindPopup(
+						'<%= reviewsAndPlaces[i].content %><br></br><button class="trigger">Delete</button>').openPopup();
+				<% } %>
+			</script>
 
 			</div>
+
 		</div>
-
 	</div>
-
-
-<%= include partials/footer %>
-
 
 </body>
 </html>	

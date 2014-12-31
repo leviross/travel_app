@@ -67,7 +67,15 @@ module.exports = function(sequelize, DataTypes) {
           data.password = hash;
           sendback(null, data);
         })
-      }
+      },
+      //ADDED THIS, NO CLUE WHY THIS WONT HASH THE 2ND CONFIRM PASSWORD ON SIGNUP!!!! 
+      beforeCreate2: function (data2, garbage, sendback) {
+        var pwdToEncrypt2 = data2.confirmed;
+        bcrypt.hash(pwdToEncrypt2, 10, function (err, hash) {
+          data2.confirmed = hash;
+          sendback(null, data2);
+        })
+      } 
     }
   });
 

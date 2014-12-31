@@ -23,11 +23,11 @@ app.use(function (req, res, next) {
 
 	//////////////////////////////// AUTO LOG IN DELETE THIS LATER!!!!
 
-	// req.session.user = {
-	// 	name: 'Levi',
-	// 	id: 4,
-	// 	email: 'levross@gmail.com'
-	// };
+	req.session.user = {
+		name: 'levi',
+		id: 19,
+		email: 'levross@gmail.com'
+	};
 
 	////////////////////////////////
 
@@ -41,7 +41,7 @@ app.get("*", function (req, res, next) {
 	var alerts = req.flash();
 	res.locals.alerts = alerts; 
 	res.locals.user = req.getUser();
-	res.locals.background = 'http://www.techdudesinc.com/wp-content/uploads/2014/07/White-Background-Wallpaper-High-Resolution.jpg';
+	res.locals.background = 'http://i.imgur.com/7BrsI0F.png';//Deleted route images, kept this for white 
 	next();
 });
 
@@ -55,40 +55,40 @@ app.get("/aboutme", function (req, res) {
 
 app.get("/search", function (req, res) {
 	var countryName = req.query.country;
-	
-	// res.locals.background = "http://www.mrwallpaper.com/wallpapers/tropical-beach-sunset-hd.jpg";
-	request("http://restcountries.eu/rest/v1/name/" + countryName, function (error, response, body) {
-		if (!error && response.statusCode == 200) {
-			var countryData = JSON.parse(body);
-			if(Array.isArray(countryData) && countryData.length > 0) {
-				res.render("search", {countryArray: countryData});	
-			}else {
+		request("http://restcountries.eu/rest/v1/name/" + countryName, function (error, response, body) {
+			if (!error && response.statusCode == 200) {
+				var countryListData = JSON.parse(body);
+				if(Array.isArray(countryListData) && countryListData.length > 0) {
+					res.render("search", {countryArray: countryListData});	
+				}else {
 
-			//TODO: MAKE THIS INTO RES RENDER LATER
-			res.send("some error message that i need to work on");
-		}
-	}else {
-		res.render("countryNotFound");
-	}
+				//TODO: MAKE THIS INTO RES RENDER LATER
+				res.send("some error message that i need to work on");
+				}
+			}else {
+				//if user searched for name that doesnt match anything
+				req.flash("danger", "Invalid country name, please search again.");
+				res.redirect("/");
+			}
 	
+	});
 });
-});
+
 app.get("/show/:id", function (req, res) {
 	var user = req.getUser();
-	// res.locals.background = "http://woliper.com/wp-content/uploads/2014/07/nyc-wallpaper-sunset-sunsethdwallpaper-hd-black-and-white-skyline-winter-at-night-wallpapers-patch-new-york-city-1920x1200-wall-paper-for-bedroom-backgrounds.jpg";
 	var countryName = req.params.id;
 	request("http://restcountries.eu/rest/v1/name/" + countryName, function (error, response, body) {
 		if (!error && response.statusCode == 200) {
-			var stuff2 = JSON.parse(body);
-			if(Array.isArray(stuff2) && stuff2.length > 0) {
+			var countryListArray = JSON.parse(body);
+			if(Array.isArray(countryListArray) && countryListArray.length > 0) {
 
 				db.place.find({where:{name:countryName,userId:user.id}}).then(function(place){
 
 					var isInFavList = !!place;
 					var placeId = isInFavList ? place.id : 0;
 
-					var showArray = stuff2[0];
-					res.render("show", {test:showArray,isInFavList:isInFavList,placeId:placeId});
+					var finalArray = countryListArray[0];
+					res.render("show", {showArray:finalArray,isInFavList:isInFavList,placeId:placeId});
 				});
 			}else {
 				//TODO: MAKE THIS INTO RES RENDER LATER
@@ -101,13 +101,13 @@ app.get("/show/:id", function (req, res) {
 
 });
 app.post("/favplaces", function (req, res) {
-
 	var user = req.getUser();
 	db.place.findOrCreate(
 	{
-		where: {name: req.body.name},
+		where: {name: req.body.name, userId: user.id},
 		defaults: {name: req.body.name, capital: req.body.capital, userId: user.id, lat:req.body.lat, lng:req.body.lng}
 	}).spread( function (user, created) {
+		// ON MY SCRIPT PAGE, THIS IS POSTED TO DB VIA AJAX, ROUTE ENDS HERE
 		res.send({wasItCreated:created});
 		// if(created) {
 		// 	req.flash("info", "This country has been added to your favorite places!");
@@ -119,16 +119,34 @@ app.post("/favplaces", function (req, res) {
 	});
 	// res.render("favplaces", )
 });
+
+// ADDED reviews MODEL TO THIS ROUTE NOW SO I CAN SHOW REVIEWS ATTACHED TO EACH COUNTRY ON ITS MARKER
 app.get("/favplaces", function (req, res) {
 	var user = req.getUser();
-	// res.locals.background = "http://www.99hdwallpaper.com/beautiful/wallpapers/most-beautiful-nature-wallpaper.jpg";
-	db.place.findAll({where: {userId: user.id}}).done(function (error, data) {
-			res.render("favplaces", {'place':data});
-		})
+	db.review.findAll({
+		where: {userId: user.id},
+		include: [{model:db.place}]
+	}).done(function (error, bothModels) {
+			res.render("favplaces", {reviewsAndPlaces:bothModels});
+		});
+});
+app.get("/worldmap", function (req, res) {
+	var user = req.getUser();
+	db.review.findAll({
+		where: {userId: user.id},
+		include: [{model:db.place}]
+	}).done(function (error, reviews) {
+		if(error){
+			return next(error);
+		}
+			//IF USER HASNT MADE ANY REVIEWS, 302 ERROR WILL HAPPEN, WILL REDIRECT TO HOMEPAGE
+			// res.send(reviews);
+			res.render("worldmap", {reviewsAndPlaces:reviews});
+		});
+	// res.render("worldmap");
 });
 
 app.get("/login", function (req, res) {
-	// res.locals.background = "http://4.bp.blogspot.com/-nM2RQQp6Pj0/U2OPr-6Bn-I/AAAAAAAAIhw/dm50JhtrHRs/s1600/magnificent-swiss-alps-snowy-mountains-nature-wallpaper.png";
 	res.render("login");
 });
 
@@ -170,63 +188,92 @@ app.post("/signup", function (req, res) {
 		where: {email: req.body.email},
 		defaults: {email: req.body.email, name: req.body.name, password: req.body.password, confirmed: req.body.confirmed}
 	}).spread(function (user, created) {
-		if (created) {
+			req.session.user = {
+				name: user.name,
+				id: user.id,
+				email: user.email
+			};
 			req.flash("info", "Welcome to Travel World!");
-			res.redirect("/");
-		} else {
-			req.flash("warning", "You have already signed up for an account, please login.");
-			res.redirect("/login");
-		}
-
+			res.redirect("/");	
+		// if (created) { - Originally this worked and just wouldnt keep login, but no errors.
+		// 	req.getUser() = user; - Then I added this to keep logged in, it was going to else 2nd else statement, "Unknown" error.
+		//  I tried using diff error handling like middleware method, didnt work. Then I commented all of this out.
+		//  Now it all works, see comment below also.
+		// 	req.flash("info", "Welcome to Travel World!");
+		// 	res.redirect("/");
+		// } else {
+		// 	req.flash("warning", "You have already signed up for an account, please login.");
+		// 	res.redirect("/login");
+		// }
 	}).catch(function (error) {
 		if (error && Array.isArray(error.errors)) {
-			error.errors.forEach(function (errorItem) {
-				req.flash("danger", errorItem.message);
-			});
-		} else {
+				error.errors.forEach(function (errorItem) {
+					req.flash("danger", errorItem.message);
+					res.redirect("/");
+				});
+		}else {
+			// Was getting "Unknown error" a lot after adding above req.getUser to keep login, solved it with req.session
+			// the if statement was adding user, but giving "Unknown" for some reason, it would go to the below else and 
+			// give the error. 
 			req.flash("danger", "Unknown Error");
+			res.redirect("/signup");
 		}
-		res.redirect("/signup");
+		
 	});
 });
 app.post("/reviews", function (req, res) {
-	res.locals.background = "https://tse3.mm.bing.net/th?id=HN.607992607286756075&pid=1.7";
 	var user = req.getUser();
-	// ad.place.find()
 	db.review.create({placeId: req.body.pid,userId: user.id, content: req.body.message})
 	.then(function(review) {
 		// res.send(review);
 		// res.render("reviews", {garbage:review});
 		// alert("Thanks for posting your experience!");
-		res.redirect("/reviews/"+req.body.pid);
+		// res.redirect("/reviews/"+req.body.pid);
+		// instead of reviews/+req.body.pid page, im redirecting to favplaces with the review attached to marker
+		res.redirect("/favplaces");
 
-	})
-});
-app.get("/reviews/:pid", function (req, res) {
-	res.locals.background = "http://travelsinfo.net/images/kilimanjaro.jpg";
-	var user = req.getUser();
-	var id = req.params.pid;
-	db.place.find(id).then(function (place) {
-		var thisCountry = place.name;
-		db.review.findAll({where: {userId: user.id, placeId: req.params.pid}}).then(function (reviews) {
-			res.render("reviews", {reviewsArray:reviews, thisCountry:thisCountry});
-		})
 	});
-	
 });
+// NOT USING THIS PAGE ANY LONGER, GOING STRAIGHT TO WORLD MAP WITH ALL REVIEWS ON MARKERS
+// app.get("/reviews/:pid", function (req, res) {
+// 	var user = req.getUser();
+// 	var id = req.params.pid;
+// 	db.place.find(id).then(function (place) {
+// 		var thisCountry = place.name;
+// 		db.review.findAll({where: {userId: user.id, placeId: req.params.pid}}).then(function (reviews) {
+// 			res.render("reviews", {reviewsArray:reviews, thisCountry:thisCountry});
+// 		});
+// 	});
+	
+// });
 app.get("/allreviews", function (req, res) {
-	res.locals.background = "http://skillcode.files.wordpress.com/2013/01/beautiful-beach-morning-skillcode.jpg";
 	var user = req.getUser();
 	db.review.findAll({
 		where: {userId: user.id},
 		include: [{model:db.place}]
 	}, {order: 'updatedAt DESC'}).done(function (error, reviews) {
 			// res.send(reviews);
-			res.render("allreviews", {reviews:reviews});
+			//if error, pass that to error handler at bottom, if no reviews, pass that to handler as well
+			if(error) {
+				// res.render("allreviews", {reviews:reviews});
+				return next(error);
+				// alert("error on 1st if statement");
+			}
+			if(reviews.length == 0) {
+				var notFound = new Error("no such review");
+				notFound.status = 404;
+				// return next(notFound);
+				//NO CLUE WHY WHEN NO REVIEWS AT ALL, IT WONT HIT THIS SECTION 
+				req.flash("warning", "You have not posted experiences yet, please post and check again.");
+				res.redirect("/");
+			}
 
-			// res.send({contentOf:contentOf, reviewOf:reviewOf});
-
-	})
+		// res.send(reviews);
+		//NO CLUE WHY IM GETTING A 'CANNOT GET' ERROR WHEN I RENDER	
+		res.render("allreviews", {reviewsArray:reviews});
+		
+		
+	});
 
 });
 
@@ -244,8 +291,27 @@ app.delete("/favplaces/:id", function (req , res) {
 
 	})
 });
+//error handling for all routes passing errors to error middleware	
+app.get('*', function(req, res, next) {
+  var err = new Error();
+  err.status = 404;
+  next(err);
+});
+app.use(function(err, req, res, next) {
+  if(err.status !== 404) {
+    return next();
+  }
 
-
+  res.status(404);
+  // res.send(err.message || '** no unicorns here **');
+  req.flash("danger", "That page doesnt exist, please try again.");
+  res.redirect("/");
+});
+app.use(function(req, res, next){
+  // res.send(404, 'Sorry cant find that!');
+  req.flash("danger", "That page doesnt exist, please try again.");
+  res.redirect("/");
+});
 
 app.listen(process.env.PORT || 3000);
 

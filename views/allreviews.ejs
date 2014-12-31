@@ -1,17 +1,14 @@
-<% include header %>
+<%= include partials/header %>
 
 
 
 	
 		
-	<% for (var i = 0; i < reviews.length; i++) { %>
-<div class="listBackground">
-	<br>
-		<h3><%= reviews[i].place.name %> - <%= reviews[i].content %></h3>
-		
-
-</div>
-				
+	<% for (var i = 0; i < reviewsArray.length; i++) { %>
+<div class="listBackgroundFinal">
+	<br></br>
+		<h3><%= reviewsArray[i].place.name %> - <%= reviewsArray[i].content %></h3>
+</div>			
 	<% } %>
 	
 
