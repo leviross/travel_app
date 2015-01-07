@@ -19,20 +19,16 @@ app.use(session({
 
 app.use(flash());
 app.use(function (req, res, next) {
+	req.getUser = function() {
+		//////////////////////////////// AUTO LOG IN - DELETE THIS LATER!!!!
 
-
-	//////////////////////////////// AUTO LOG IN DELETE THIS LATER!!!!
-
-	req.session.user = {
-		name: 'levi',
-		id: 19,
-		email: 'levross@gmail.com'
-	};
+	// req.session.user = {
+	// 	name: 'levi',
+	// 	id: 19,
+	// 	email: 'levross@gmail.com'
+	// };
 
 	////////////////////////////////
-
-
-	req.getUser = function() {
 		return req.session.user || false;
 	}
 	next();
@@ -78,7 +74,10 @@ app.get("/show/:id", function (req, res) {
 	var user = req.getUser();
 	var countryName = req.params.id;
 	request("http://restcountries.eu/rest/v1/name/" + countryName, function (error, response, body) {
-		if (!error && response.statusCode == 200) {
+		if(error){ //  < FOR SOME REASON, ERRORS ARE NOT CATCHING HERE
+			throw error;
+			return next(error);
+		}else if (!error && response.statusCode == 200) {
 			var countryListArray = JSON.parse(body);
 			if(Array.isArray(countryListArray) && countryListArray.length > 0) {
 
@@ -89,13 +88,17 @@ app.get("/show/:id", function (req, res) {
 
 					var finalArray = countryListArray[0];
 					res.render("show", {showArray:finalArray,isInFavList:isInFavList,placeId:placeId});
+					// res.send(finalArray);
 				});
 			}else {
 				//TODO: MAKE THIS INTO RES RENDER LATER
 				res.send("we found no country by that name")
 			}
 		}else {
-			res.render("countryNotFound");
+			// res.render("countryNotFound");
+			// return next(error); 
+			req.flash("danger", "Invalid country name, please search again.");
+			res.redirect("/");
 		}
 	});
 
@@ -128,6 +131,7 @@ app.get("/favplaces", function (req, res) {
 		include: [{model:db.place}]
 	}).done(function (error, bothModels) {
 			res.render("favplaces", {reviewsAndPlaces:bothModels});
+			// res.send(bothModels);
 		});
 });
 app.get("/worldmap", function (req, res) {
@@ -209,7 +213,7 @@ app.post("/signup", function (req, res) {
 		if (error && Array.isArray(error.errors)) {
 				error.errors.forEach(function (errorItem) {
 					req.flash("danger", errorItem.message);
-					res.redirect("/");
+					res.redirect("signup");
 				});
 		}else {
 			// Was getting "Unknown error" a lot after adding above req.getUser to keep login, solved it with req.session

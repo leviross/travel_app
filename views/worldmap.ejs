@@ -1,17 +1,16 @@
 <%= include partials/header %>
 
 
-
 <div id="map"></div>
-
-
-
 
 	<script>
 
 		L.mapbox.accessToken = 'pk.eyJ1IjoibGV2aXJvc3MiLCJhIjoiYTlobXlocyJ9.vN58Urs3q4vCMOIAItTCOQ';
-		var map = L.mapbox.map('map', 'leviross.kglil6n5');
+		var map = L.mapbox.map('map', 'leviross.kglil6n5', {
+			zoomControl: false
+		});
 		// map.addControl(L.mapbox.legendControl());
+
 		map.touchZoom.disable();
 		map.doubleClickZoom.disable();
 		map.scrollWheelZoom.disable();
