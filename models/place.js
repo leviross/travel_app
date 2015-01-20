@@ -11,7 +11,7 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
       associate: function(models) {
         // associations can be defined here
-        models.place.hasMany(models.review, {onDelete: 'CASCASE', hooks: true});
+        models.place.hasMany(models.review, {onDelete: 'CASCADE', hooks: true});
         models.place.belongsTo(models.user);
       }
     }

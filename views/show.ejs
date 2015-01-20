@@ -19,7 +19,7 @@
 				<h3>Subregion: <%= showArray.subregion %></h3>
 				<h3>Native Name: <%= showArray.nativeName %></h3>
 				<h3>Demonym: <%= showArray.demonym %></h3>
-				<h3>UTC Time Zone: 
+				<h3>UTC Time Zone:
 					<% if(showArray.timezones  === null) { %>
 					<%= showArray.timezones = "not available" %>
 					<% }else { %>
@@ -30,14 +30,16 @@
 				<% if(user) { %>
 
 					<% if(isInFavList){ %>
-						<form class="form" method="post" action="/reviews">
-							<textarea class="form-control" placeholder="Enter Your Experiences" name="message"></textarea>
-							<input type="hidden" name="pid" value="<%= placeId %>">
-							<input id="review" type="submit" value="Submit" class="btn btn-lg btn-default">
-						</form>	
+						<div id="experience">
+							<form class="form" method="post" action="/reviews">
+								<textarea class="form-control" placeholder="Enter Your Experiences" name="message"></textarea>
+								<input type="hidden" name="pid" value="<%= placeId %>">
+								<input id="review" type="submit" value="Submit" class="btn btn-lg btn-default">
+							</form>
+						</div>
 					<% }else{ %>
 						<div class="btn-group">
-							<button class="before btn btn-default" data-name="<%= showArray.name %>" data-capital="<%= showArray.capital %>" data-lat="<%= Math.round(showArray.latlng[0]) %>" data-lng="<%= Math.round(showArray.latlng[1]) %>"><span>Add to Favorites</span></button> 
+							<button class="before btn btn-default" data-name="<%= showArray.name %>" data-capital="<%= showArray.capital %>" data-lat="<%= Math.round(showArray.latlng[0]) %>" data-lng="<%= Math.round(showArray.latlng[1]) %>"><span>Add to Favorites</span></button>
 						</div>
 						<div id="addedtofav"><h4><strong>Added to My Places.</strong></h4></div>
 					<% } %>
@@ -50,9 +52,9 @@
 				drawMap(<%- showArray.latlng[0] %>, <%- showArray.latlng[1] %>);
 			</script>
 		</div>
-		
-	</div>	
+
+	</div>
 </div>
 
 </body>
-</html>	
+</html>

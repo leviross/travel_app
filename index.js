@@ -29,15 +29,15 @@ app.use(function (req, res, next) {
 	// };
 
 	////////////////////////////////
-		return req.session.user || false;
-	}
-	next();
+	return req.session.user || false;
+}
+next();
 });
 app.get("*", function (req, res, next) {
 	var alerts = req.flash();
-	res.locals.alerts = alerts; 
+	res.locals.alerts = alerts;
 	res.locals.user = req.getUser();
-	res.locals.background = 'http://i.imgur.com/7BrsI0F.png';//Deleted route images, kept this for white 
+	res.locals.background = 'http://i.imgur.com/7BrsI0F.png';//Deleted route images, kept this for white
 	next();
 });
 
@@ -51,23 +51,23 @@ app.get("/aboutme", function (req, res) {
 
 app.get("/search", function (req, res) {
 	var countryName = req.query.country;
-		request("http://restcountries.eu/rest/v1/name/" + countryName, function (error, response, body) {
-			if (!error && response.statusCode == 200) {
-				var countryListData = JSON.parse(body);
-				if(Array.isArray(countryListData) && countryListData.length > 0) {
-					res.render("search", {countryArray: countryListData});	
-				}else {
+	request("http://restcountries.eu/rest/v1/name/" + countryName, function (error, response, body) {
+		if (!error && response.statusCode == 200) {
+			var countryListData = JSON.parse(body);
+			if(Array.isArray(countryListData) && countryListData.length > 0) {
+				res.render("search", {countryArray: countryListData});
+			}else {
 
 				//TODO: MAKE THIS INTO RES RENDER LATER
 				res.send("some error message that i need to work on");
-				}
-			}else {
+			}
+		}else {
 				//if user searched for name that doesnt match anything
 				req.flash("danger", "Invalid country name, please search again.");
 				res.redirect("/");
 			}
-	
-	});
+
+		});
 });
 
 app.get("/show/:id", function (req, res) {
@@ -96,7 +96,7 @@ app.get("/show/:id", function (req, res) {
 			}
 		}else {
 			// res.render("countryNotFound");
-			// return next(error); 
+			// return next(error);
 			req.flash("danger", "Invalid country name, please search again.");
 			res.redirect("/");
 		}
@@ -130,7 +130,7 @@ app.get("/favplaces", function (req, res) {
 		where: {userId: user.id},
 		include: [{model:db.place}]
 	}).done(function (error, bothModels) {
-			res.render("favplaces", {reviewsAndPlaces:bothModels});
+		res.render("favplaces", {reviewsAndPlaces:bothModels});
 			// res.send(bothModels);
 		});
 });
@@ -172,11 +172,11 @@ app.post("/login", function (req, res) {
 					req.flash("danger", "Please enter your correct password.");
 					res.redirect("/login");
 				}
-			})	
+			})
 		} else {
 			req.flash("warning", "Please enter a correct user email.");
 			res.redirect("/login");
-		}		
+		}
 
 
 	});
@@ -192,37 +192,37 @@ app.post("/signup", function (req, res) {
 		where: {email: req.body.email},
 		defaults: {email: req.body.email, name: req.body.name, password: req.body.password, confirmed: req.body.confirmed}
 	}).spread(function (user, created) {
-			req.session.user = {
-				name: user.name,
-				id: user.id,
-				email: user.email
-			};
+			// req.session.user = {
+			// 	name: user.name,
+			// 	id: user.id,
+			// 	email: user.email
+			// };
 			req.flash("info", "Welcome to Travel World!");
-			res.redirect("/");	
-		// if (created) { - Originally this worked and just wouldnt keep login, but no errors.
-		// 	req.getUser() = user; - Then I added this to keep logged in, it was going to else 2nd else statement, "Unknown" error.
-		//  I tried using diff error handling like middleware method, didnt work. Then I commented all of this out.
-		//  Now it all works, see comment below also.
-		// 	req.flash("info", "Welcome to Travel World!");
-		// 	res.redirect("/");
-		// } else {
-		// 	req.flash("warning", "You have already signed up for an account, please login.");
-		// 	res.redirect("/login");
-		// }
+			res.redirect("/");
+		if (created) { //- Originally this worked and just wouldnt keep login, but no errors.
+			req.getUser() = user; //- Then I added this to keep logged in, it was going to else 2nd else statement, "Unknown" error.
+		 // I tried using diff error handling like middleware method, didnt work. Then I commented all of this out.
+		 // Now it all works, see comment below also.
+			req.flash("info", "Welcome to Travel World, login and explore!");
+		  res.redirect("/login");
+		} else {
+			req.flash("warning", "You have already signed up for an account, please login.");
+			res.redirect("/login");
+		}
 	}).catch(function (error) {
 		if (error && Array.isArray(error.errors)) {
-				error.errors.forEach(function (errorItem) {
-					req.flash("danger", errorItem.message);
-					res.redirect("signup");
-				});
+			error.errors.forEach(function (errorItem) {
+				req.flash("danger", errorItem.message);
+				res.redirect("signup");
+			});
 		}else {
 			// Was getting "Unknown error" a lot after adding above req.getUser to keep login, solved it with req.session
-			// the if statement was adding user, but giving "Unknown" for some reason, it would go to the below else and 
-			// give the error. 
+			// the if statement was adding user, but giving "Unknown" for some reason, it would go to this else and
+			// give the error.
 			req.flash("danger", "Unknown Error");
 			res.redirect("/signup");
 		}
-		
+
 	});
 });
 app.post("/reviews", function (req, res) {
@@ -248,7 +248,7 @@ app.post("/reviews", function (req, res) {
 // 			res.render("reviews", {reviewsArray:reviews, thisCountry:thisCountry});
 // 		});
 // 	});
-	
+
 // });
 app.get("/allreviews", function (req, res) {
 	var user = req.getUser();
@@ -267,16 +267,16 @@ app.get("/allreviews", function (req, res) {
 				var notFound = new Error("no such review");
 				notFound.status = 404;
 				// return next(notFound);
-				//NO CLUE WHY WHEN NO REVIEWS AT ALL, IT WONT HIT THIS SECTION 
+				//NO CLUE WHY WHEN NO REVIEWS AT ALL, IT WONT HIT THIS SECTION
 				req.flash("warning", "You have not posted experiences yet, please post and check again.");
 				res.redirect("/");
 			}
 
 		// res.send(reviews);
-		//NO CLUE WHY IM GETTING A 'CANNOT GET' ERROR WHEN I RENDER	
+		//NO CLUE WHY IM GETTING A 'CANNOT GET' ERROR WHEN I RENDER
 		res.render("allreviews", {reviewsArray:reviews});
-		
-		
+
+
 	});
 
 });
@@ -295,18 +295,18 @@ app.delete("/favplaces/:id", function (req , res) {
 
 	})
 });
-//error handling for all routes passing errors to error middleware	
+//error handling for all routes passing errors to error middleware
 app.get('*', function(req, res, next) {
-  var err = new Error();
-  err.status = 404;
-  next(err);
+	var err = new Error();
+	err.status = 404;
+	next(err);
 });
 app.use(function(err, req, res, next) {
-  if(err.status !== 404) {
-    return next();
-  }
+	if(err.status !== 404) {
+		return next();
+	}
 
-  res.status(404);
+	res.status(404);
   // res.send(err.message || '** no unicorns here **');
   req.flash("danger", "That page doesnt exist, please try again.");
   res.redirect("/");
