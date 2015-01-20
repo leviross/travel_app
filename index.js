@@ -210,6 +210,7 @@ app.post("/signup", function (req, res) {
 			res.redirect("/login");
 		}
 	}).catch(function (error) {
+		console.log(Array.isArray(error.errors));
 		if (error && Array.isArray(error.errors)) {
 			error.errors.forEach(function (errorItem) {
 				req.flash("danger", errorItem.message);
@@ -219,9 +220,8 @@ app.post("/signup", function (req, res) {
 			// Was getting "Unknown error" a lot after adding above req.getUser to keep login, solved it with req.session
 			// the if statement was adding user, but giving "Unknown" for some reason, it would go to this else and
 			// give the error.
-			throw error;
-			// req.flash("danger", "Unknown Error");
-			// res.redirect("/signup");
+			req.flash("danger", "Unknown Error");
+			res.redirect("/signup");
 		}
 
 	});
