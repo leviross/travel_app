@@ -37,7 +37,7 @@ app.get("*", function (req, res, next) {
 	var alerts = req.flash();
 	res.locals.alerts = alerts;
 	res.locals.user = req.getUser();
-	res.locals.background = 'http://i.imgur.com/7BrsI0F.png';//Deleted route images, kept this for white
+	//res.locals.background = 'http://i.imgur.com/7BrsI0F.png';//Deleted route images, kept this for white
 	next();
 });
 
