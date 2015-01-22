@@ -192,25 +192,24 @@ app.post("/signup", function (req, res) {
 		where: {email: req.body.email},
 		defaults: {email: req.body.email, name: req.body.name, password: req.body.password, confirmed: req.body.confirmed}
 	}).spread(function (user, created) {
-			// req.session.user = {
-			// 	name: user.name,
-			// 	id: user.id,
-			// 	email: user.email
-			// };
-			req.flash("info", "Welcome to Travel World!");
-			res.redirect("/");
 		if (created) { //- Originally this worked and just wouldnt keep login, but no errors.
-			req.getUser() = user; //- Then I added this to keep logged in, it was going to else 2nd else statement, "Unknown" error.
+			//user = req.getUser(); //- Then I added this to keep logged in, it was going to else 2nd else statement, "Unknown" error.
 		 // I tried using diff error handling like middleware method, didnt work. Then I commented all of this out.
 		 // Now it all works, see comment below also.
+
+		 //logs in user (IF created)
+			req.session.user = {
+				name: user.name,
+				id: user.id,
+				email: user.email
+			};
 			req.flash("info", "Welcome to Travel World, login and explore!");
-		  res.redirect("/login");
+		  res.redirect("/");
 		} else {
 			req.flash("warning", "You have already signed up for an account, please login.");
 			res.redirect("/login");
 		}
 	}).catch(function (error) {
-		console.log(Array.isArray(error.errors));
 		if (error && Array.isArray(error.errors)) {
 			error.errors.forEach(function (errorItem) {
 				req.flash("danger", errorItem.message);
@@ -220,6 +219,7 @@ app.post("/signup", function (req, res) {
 			// Was getting "Unknown error" a lot after adding above req.getUser to keep login, solved it with req.session
 			// the if statement was adding user, but giving "Unknown" for some reason, it would go to this else and
 			// give the error.
+			console.log(error);
 			req.flash("danger", "Unknown Error");
 			res.redirect("/signup");
 		}
